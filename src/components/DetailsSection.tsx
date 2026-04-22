@@ -52,18 +52,18 @@ export const DetailsSection: React.FC = () => {
         <div className="space-y-8 pl-4 border-l bg-white/40 p-8 shadow-sm backdrop-blur-sm shadow-[#e0d9cc]/50 inline-block border-[#5A6351]/30">
           <div className="detail-text">
             <p className="font-sans text-xs tracking-[0.2em] uppercase text-gray-500 mb-1">Fecha</p>
-            <p className="font-body text-xl md:text-2xl">Sábado, 24 de Octubre de 2026</p>
+            <p className="font-body text-xl md:text-2xl">Domingo, 23 de Agosto de 2026</p>
           </div>
           
           <div className="detail-text">
             <p className="font-sans text-xs tracking-[0.2em] uppercase text-gray-500 mb-1">Hora</p>
-            <p className="font-body text-xl md:text-2xl">4:00 PM</p>
+            <p className="font-body text-xl md:text-2xl">17:30</p>
           </div>
           
           <div className="detail-text">
             <p className="font-sans text-xs tracking-[0.2em] uppercase text-gray-500 mb-1">Lugar</p>
-            <p className="font-body text-xl md:text-2xl">Palacio de la Magdalena</p>
-            <p className="font-sans text-sm text-gray-600 mt-1">Av. de la Reina Victoria, s/n<br/>39005 Santander, Cantabria</p>
+            <p className="font-body text-xl md:text-2xl">La Huerta de Cubas</p>
+            <p className="font-sans text-sm text-gray-600 mt-1">Cubas, Cantabria</p>
           </div>
         </div>
       </div>

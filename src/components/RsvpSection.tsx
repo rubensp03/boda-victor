@@ -42,7 +42,7 @@ export const RsvpSection: React.FC = () => {
             
             <p className="font-body text-gray-700 text-lg mb-8">
               Por favor, confirmad vuestra asistencia antes del <br/>
-              <strong className="text-subtle-gold font-normal italic">1 de Septiembre de 2026</strong>
+              <strong className="text-subtle-gold font-normal italic">20 de Julio de 2026</strong>
             </p>
             
             <button className="bg-forest-green text-rich-cream font-sans tracking-widest text-sm uppercase px-10 py-4 hover:bg-[#152C16] transition-colors border border-transparent hover:border-subtle-gold/50 duration-300">
