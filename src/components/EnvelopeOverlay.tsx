@@ -152,7 +152,7 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
           
           <img 
             ref={sealRef}
-            src="/assets/wax_seal.png" 
+            src="/assets/wax_seal_trans.png" 
             alt="Sello de Cera Dorado" 
             className="absolute left-1/2 bottom-0 w-24 h-24 md:w-28 md:h-28 object-cover transform -translate-x-1/2 translate-y-[45%] drop-shadow-[0_15px_15px_rgba(0,0,0,0.8)] transition-transform group-hover:scale-105"
             style={{ backfaceVisibility: 'hidden' }}
