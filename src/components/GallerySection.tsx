@@ -25,10 +25,10 @@ export const GallerySection: React.FC = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-screen py-32 bg-deep-grass-green"
+      className="relative min-h-screen py-32 bg-[#2c4228]"
     >
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center opacity-30 mix-blend-overlay"
+        className="absolute inset-0 z-0 bg-cover bg-center opacity-40 mix-blend-overlay"
         style={{ backgroundImage: 'url(/assets/bg_dark_grass.png)' }}
       />
       
