@@ -9,7 +9,6 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
   const containerRef = useRef<HTMLDivElement>(null);
   const envelopeRef = useRef<HTMLDivElement>(null);
   const flapRef = useRef<HTMLDivElement>(null);
-  const letterRef = useRef<HTMLDivElement>(null);
   const sealRef = useRef<HTMLImageElement>(null);
   const [isOpened, setIsOpened] = useState(false);
 
@@ -32,53 +31,31 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
 
       // 1. Pop seal slower and smoother
       tl.to(sealRef.current, {
-        scale: 1.2,
+        scale: 1.1,
         opacity: 0,
-        duration: 0.6,
+        duration: 1.0,
         ease: 'power2.inOut',
       });
 
-      // 2. Open flap slower
+      // 2. Open flap extremely slowly and majestically
       tl.to(flapRef.current, {
         rotateX: 180,
-        duration: 1.4,
+        duration: 2.5,
         ease: 'power2.inOut',
-      }, "-=0.2");
+      }, "-=0.4");
 
-      // Swap z-index halfway
-      tl.set(flapRef.current, { zIndex: 10 }, "-=0.7");
-      tl.set(letterRef.current, { zIndex: 50 }, "-=0.7");
-
-      // 3. Envelope zoom in smoother
+      // 3. Envelope zoom in smoother and continuous
       tl.to(envelopeRef.current, {
-        scale: 1.15,
-        y: 40, 
-        duration: 1.6,
+        scale: 1.3,
+        duration: 3.0,
         ease: 'power2.inOut',
-      }, "-=1.2");
+      }, "-=2.2");
 
-      // 4. Letter slides up out of the envelope very naturally
-      tl.to(letterRef.current, {
-        y: -180,
-        rotateX: 3, 
-        boxShadow: "0 15px 30px rgba(0,0,0,0.1)", // modern soft shadow
-        duration: 1.5,
-        ease: 'power2.inOut',
-      }, "-=0.8");
-
-      // 5. Letter scales up ethereally
-      tl.to(letterRef.current, {
-        scale: 4.5, 
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power2.inOut',
-      }, "+=0.2");
-
-      // 6. Fade the whole wrapper out
+      // 4. Fade the whole wrapper out seamlessly into the Hero Section
       tl.to(containerRef.current, {
         opacity: 0,
-        duration: 0.5,
-      }, "-=0.6");
+        duration: 2.0,
+      }, "-=1.8");
 
     }, containerRef);
   };
@@ -90,7 +67,7 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
       gsap.to(envelopeRef.current, {
         scale: 1.02,
         y: -5,
-        duration: 2,
+        duration: 2.5,
         yoyo: true,
         repeat: -1,
         ease: 'sine.inOut'
@@ -102,35 +79,24 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
   return (
     <div 
       ref={containerRef} 
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#FDFBF7]/60 backdrop-blur-xl select-none perspective-[2000px]"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#FDFBF7]/70 backdrop-blur-xl select-none perspective-[2000px] overflow-hidden"
     >
       <div 
         ref={envelopeRef}
         onClick={handleOpen}
-        className="relative w-[340px] h-[220px] md:w-[480px] md:h-[300px] cursor-pointer group"
+        // Enorme ocupando gran parte del movil, delimitado en desktop
+        className="relative w-[92vw] h-[65vw] max-w-[650px] max-h-[450px] cursor-pointer group"
       >
         {/* Layer 1: ENVELOPE BACK */}
         <div 
           className="absolute inset-0 shadow-xl rounded-sm border border-[#e0d9cc]/50 z-0"
           style={{ ...paperStyle, filter: 'brightness(0.96)' }}
         >
-           <div className="absolute inset-0 bg-black/5 shadow-[inset_0_10px_30px_rgba(0,0,0,0.05)]" />
-        </div>
-        
-        {/* Layer 2: LETTER INSIDE */}
-        <div 
-          ref={letterRef}
-          className="absolute inset-x-2 top-2 bottom-2 bg-white shadow-sm flex flex-col items-center justify-center border border-[#eae0d2] z-10"
-          style={paperStyle}
-        >
-          <span className="font-calligraphy text-[#5A6351] text-3xl md:text-5xl text-center px-4 leading-normal drop-shadow-sm">
-            Nuestra Boda<br/>
-            <span className="text-xl md:text-3xl mt-4 block opacity-80">Víctor e Inna</span>
-          </span>
-          <div className="w-24 h-px bg-[#5A6351] mt-6 opacity-30" />
+           {/* Interior oscuro simulando el fondo vacío */}
+           <div className="absolute inset-0 bg-black/10 shadow-[inset_0_10px_40px_rgba(0,0,0,0.15)]" />
         </div>
 
-        {/* Layer 3: SIDE WINGS */}
+        {/* Layer 2: SIDE WINGS */}
         <div className="absolute inset-0 drop-shadow-sm z-20 pointer-events-none">
           <div className="absolute inset-0 w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 0, 50% 50%, 0 100%)', filter: 'brightness(0.98)' }} />
           <div className="absolute inset-0 pointer-events-none drop-shadow-sm">
@@ -138,12 +104,12 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
           </div>
         </div>
 
-        {/* Layer 4: BOTTOM WING */}
+        {/* Layer 3: BOTTOM WING */}
         <div className="absolute inset-0 pointer-events-none drop-shadow-md z-30">
           <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 100%, 50% 50%, 100% 100%)', filter: 'brightness(1.0)' }} />
         </div>
 
-        {/* Layer 5: TOP FLAP */}
+        {/* Layer 4: TOP FLAP */}
         <div 
           ref={flapRef}
           className="absolute top-0 left-0 w-full h-[65%] z-40 drop-shadow-md"
@@ -152,19 +118,20 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
           <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', filter: 'brightness(1.02)' }} />
           <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', transform: 'rotateX(180deg)', filter: 'brightness(0.94)' }} />
           
+          {/* WAX SEAL responsive scaling mapping against the parent's width */}
           <img 
             ref={sealRef}
             src="/assets/wax_seal_trans.png" 
             alt="Sello de Cera Dorado" 
-            className="absolute left-1/2 bottom-0 w-20 h-20 md:w-24 md:h-24 object-cover transform -translate-x-1/2 translate-y-[45%] drop-shadow-[0_8px_12px_rgba(0,0,0,0.3)] transition-transform group-hover:scale-105 opacity-90"
-            style={{ backfaceVisibility: 'hidden' }}
+            className="absolute left-1/2 bottom-0 w-[20%] min-w-[70px] max-w-[110px] object-cover transform -translate-x-1/2 translate-y-[45%] drop-shadow-[0_8px_12px_rgba(0,0,0,0.3)] transition-transform group-hover:scale-105 opacity-90"
+            style={{ backfaceVisibility: 'hidden', aspectRatio: '1/1' }}
           />
         </div>
 
       </div>
       
       {!isOpened && (
-        <p className="absolute bottom-16 text-ivory-white font-sans tracking-[0.3em] uppercase text-xs md:text-sm animate-pulse opacity-80 pointer-events-none">
+        <p className="absolute bottom-16 text-[#5A6351] font-sans tracking-[0.3em] uppercase text-xs md:text-sm animate-pulse opacity-80 pointer-events-none drop-shadow-sm">
           Click para abrir
         </p>
       )}
