@@ -80,7 +80,8 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
   return (
     <div 
       ref={containerRef} 
-      className="fixed inset-0 z-[100] bg-[#FDFBF7] select-none perspective-[2000px] overflow-hidden"
+      className="fixed inset-0 z-[100] bg-[#FDFBF7] select-none overflow-hidden"
+      style={{ perspective: '2000px', '--flap-y': 'clamp(250px, 75vw, 50%)' } as React.CSSProperties}
     >
       <div 
         ref={envelopeRef}
@@ -99,22 +100,22 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
 
         {/* Layer 2: SIDE WINGS */}
         <div className="absolute inset-0 drop-shadow-sm z-20 pointer-events-none">
-          <div className="absolute inset-0 w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 0, 50% 50%, 0 100%)', filter: 'brightness(0.98)' }} />
+          <div className="absolute inset-0 w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 0, 50% var(--flap-y), 0 100%)', filter: 'brightness(0.98)' }} />
           <div className="absolute inset-0 pointer-events-none drop-shadow-sm">
-            <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(100% 0, 50% 50%, 100% 100%)', filter: 'brightness(0.97)' }} />
+            <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(100% 0, 50% var(--flap-y), 100% 100%)', filter: 'brightness(0.97)' }} />
           </div>
         </div>
 
         {/* Layer 3: BOTTOM WING */}
         <div className="absolute inset-0 pointer-events-none drop-shadow-md z-30">
-          <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 100%, 50% 50%, 100% 100%)', filter: 'brightness(1.0)' }} />
+          <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 100%, 50% var(--flap-y), 100% 100%)', filter: 'brightness(1.0)' }} />
         </div>
 
         {/* Layer 4: TOP FLAP */}
         <div 
           ref={flapRef}
-          className="absolute top-0 left-0 w-full h-[50%] z-40 drop-shadow-md"
-          style={{ transformOrigin: 'top center', transformStyle: 'preserve-3d' }}
+          className="absolute top-0 left-0 w-full z-40 drop-shadow-md"
+          style={{ height: 'var(--flap-y)', transformOrigin: 'top center', transformStyle: 'preserve-3d' }}
         >
           <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', filter: 'brightness(1.02)' }} />
           <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', transform: 'rotateX(180deg)', filter: 'brightness(0.94)' }} />
