@@ -54,8 +54,8 @@ export const HeroSection: React.FC = () => {
           <div className="hero-elem absolute z-20 shadow-2xl rotate-[-3deg] transform hover:rotate-[-1deg] transition-transform duration-500">
             <div className="bg-white p-3 pb-12 shadow-xl border border-[#ece8de]">
               <img 
-                src="/assets/bride_peonies.png" 
-                alt="Bride holding peonies" 
+                src="/assets/foto_1.jpg" 
+                alt="Víctor e Inna" 
                 className="w-64 h-80 object-cover"
               />
             </div>
