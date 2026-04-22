@@ -29,30 +29,22 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
         onComplete: onOpenComplete,
       });
 
-      // 1. Seal falls off gracefully simulating a break
-      tl.to(sealRef.current, {
-        y: "+=150",       // falls down
-        rotation: -20,    // tumbles
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power3.in', // gravity acceleration
+      // 1. Open flap extremely slowly and majestically exactly halfway (around 60 degrees)
+      tl.to(flapRef.current, {
+        rotateX: 65,
+        duration: 2.5,
+        ease: 'power2.out',
       });
 
-      // 2. Open flap extremely slowly and majestically
-      tl.to(flapRef.current, {
-        rotateX: 180,
-        duration: 2.5,
-        ease: 'power2.inOut',
-      }, "-=0.4");
-
-      // 3. Envelope zoom in smoother and continuous
+      // 2. Envelope zooms massively inwards, moving down, giving the sensation of passing through the opening
       tl.to(envelopeRef.current, {
-        scale: 1.3,
-        duration: 3.0,
+        scale: 2.0,
+        y: 120,
+        duration: 3.5,
         ease: 'power2.inOut',
       }, "-=2.2");
 
-      // 4. Fade the whole wrapper out seamlessly into the Hero Section
+      // 3. Fade the whole wrapper out seamlessly into the Hero Section
       tl.to(containerRef.current, {
         opacity: 0,
         duration: 2.0,
@@ -125,8 +117,12 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
             ref={sealRef}
             src="/assets/wax_seal_trans.png" 
             alt="Sello de Cera Dorado" 
-            className="absolute left-1/2 bottom-0 w-[20%] min-w-[70px] max-w-[110px] object-cover transform -translate-x-1/2 translate-y-[45%] drop-shadow-[0_8px_12px_rgba(0,0,0,0.3)] transition-transform group-hover:scale-105 opacity-90"
-            style={{ backfaceVisibility: 'hidden', aspectRatio: '1/1' }}
+            className="absolute left-1/2 bottom-0 w-[20%] min-w-[70px] max-w-[110px] object-cover transform -translate-x-1/2 translate-y-[45%] transition-transform group-hover:scale-105"
+            style={{ 
+               aspectRatio: '1/1',
+               mixBlendMode: 'multiply',
+               filter: 'contrast(1.2)'
+            }}
           />
         </div>
 
