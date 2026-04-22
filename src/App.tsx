@@ -3,6 +3,7 @@ import { EnvelopeOverlay } from './components/EnvelopeOverlay';
 import { HeroSection } from './components/HeroSection';
 import { DetailsSection } from './components/DetailsSection';
 import { GallerySection } from './components/GallerySection';
+import { QuoteSection } from './components/QuoteSection';
 import { DressCodeSection } from './components/DressCodeSection';
 import { RsvpSection } from './components/RsvpSection';
 import { FooterSection } from './components/FooterSection';
@@ -26,6 +27,9 @@ function App() {
         </TornPaper>
         <TornPaper position="bottom" className="z-30 -mb-10">
           <GallerySection />
+        </TornPaper>
+        <TornPaper position="bottom" className="z-[25] -mb-10">
+          <QuoteSection />
         </TornPaper>
         <TornPaper position="bottom" className="z-20 -mb-10">
           <DressCodeSection />
