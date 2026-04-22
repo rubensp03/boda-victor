@@ -36,7 +36,7 @@ export const HeroSection: React.FC = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Left Column: Typography */}
-        <div className="text-center md:text-left order-2 md:order-1">
+        <div className="text-center md:text-left">
           <h2 className="hero-elem font-sans tracking-[0.2em] text-subtle-gold text-sm uppercase mb-6">Estáis invitados a</h2>
           <h1 className="hero-elem font-calligraphy text-6xl md:text-8xl text-rich-cream leading-tight mb-4 drop-shadow-lg">
             Nuestra Boda
@@ -47,7 +47,7 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* Right Column: Collage Images */}
-        <div className="relative h-[600px] w-full order-1 md:order-2 flex justify-center items-center">
+        <div className="relative h-[500px] md:h-[600px] w-full mt-8 md:mt-0 flex justify-center items-center">
           {/* Main Photo */}
           <div className="hero-elem absolute z-20 shadow-2xl rotate-[-3deg] transform hover:rotate-[-1deg] transition-transform duration-500">
             <div className="bg-white p-3 pb-12 shadow-xl border border-[#ece8de]">
