@@ -29,11 +29,12 @@ export const HeroSection: React.FC = () => {
       className="relative min-h-screen flex items-center justify-center pt-20 pb-32"
     >
       {/* Background with blur and dark grass */}
+      <div className="absolute inset-0 z-0 bg-[#0a140a]" />
+      <div className="absolute inset-0 z-0 bg-forest-green opacity-90" />
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
-        style={{ backgroundImage: 'url(/assets/bg_dark_grass.png)', filter: 'blur(4px)' }}
+        className="absolute -inset-10 z-0 bg-cover bg-center bg-no-repeat opacity-50 mix-blend-overlay"
+        style={{ backgroundImage: 'url(/assets/bg_dark_grass.png)', filter: 'blur(6px)' }}
       />
-      <div className="absolute inset-0 z-0 bg-forest-green opacity-60" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Left Column: Typography */}
