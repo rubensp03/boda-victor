@@ -36,9 +36,10 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
         ease: 'back.in(2)',
       });
 
-      // 2. Open flap (3D rotate)
+      // 2. Open flap (3D rotate outwards to avoid clipping the paper)
       tl.to(flapRef.current, {
-        rotateX: -180,
+        rotateX: 180, // rotate forwards so it swings towards the camera
+        z: -1, // push the opened flap physically behind the letter
         duration: 0.8,
         ease: 'power3.inOut',
       }, "-=0.1");
@@ -54,14 +55,15 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
       // 4. Letter slides up out of the envelope
       tl.to(letterRef.current, {
         y: -180,
+        rotateX: 5, // slight tilt for realism
         duration: 1,
         ease: 'power3.out',
-        zIndex: 50,
       }, "-=0.3");
 
       // 5. Letter scales up to fill the whole screen, dissolving into the actual Hero Section
       tl.to(letterRef.current, {
         scale: 4,
+        z: 100, // physically pull the letter over the side wings
         opacity: 0,
         duration: 0.8,
         ease: 'power2.inOut',
