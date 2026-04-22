@@ -12,12 +12,9 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
   const sealRef = useRef<HTMLImageElement>(null);
   const [isOpened, setIsOpened] = useState(false);
 
-  // Modern, crisp paper style
+  // Modern, crisp feminine paper style (vellum/pearl white, extremely clean)
   const paperStyle = {
-    backgroundColor: '#FDFBF7',
-    backgroundImage: 'url(/assets/bg_linen_paper.png)',
-    backgroundSize: 'cover',
-    backgroundBlendMode: 'multiply' as const,
+    backgroundColor: '#FFFCFC', // Soft, luminous, very slight warm snow white
   };
 
   const handleOpen = () => {
@@ -72,7 +69,7 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
   return (
     <div 
       ref={containerRef} 
-      className="fixed inset-0 z-[100] bg-[#FDFBF7] select-none overflow-hidden"
+      className="fixed inset-0 z-[100] bg-[#FFFAFA] select-none overflow-hidden"
       style={{ perspective: '2000px', '--flap-y': 'clamp(250px, 75vw, 50%)' } as React.CSSProperties}
     >
       <div 
@@ -83,34 +80,34 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
       >
         {/* Layer 1: ENVELOPE BACK */}
         <div 
-          className="absolute inset-0 shadow-xl border border-[#e0d9cc]/50 z-0"
-          style={{ ...paperStyle, filter: 'brightness(0.96)' }}
+          className="absolute inset-0 border border-[#f0e8e6] z-0"
+          style={{ ...paperStyle, filter: 'brightness(0.97)' }}
         >
-           {/* Interior oscuro simulando el fondo vacío */}
-           <div className="absolute inset-0 bg-black/15 shadow-[inset_0_10px_40px_rgba(0,0,0,0.15)]" />
+           {/* Soft airy interior to feel light and hollow */}
+           <div className="absolute inset-0 bg-[#3a202a]/[0.02] shadow-[inset_0_20px_40px_rgba(50,30,40,0.03)]" />
         </div>
 
         {/* Layer 2: SIDE WINGS */}
-        <div className="absolute inset-0 drop-shadow-sm z-20 pointer-events-none">
-          <div className="absolute inset-0 w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 0, 50% var(--flap-y), 0 100%)', filter: 'brightness(0.98)' }} />
-          <div className="absolute inset-0 pointer-events-none drop-shadow-sm">
-            <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(100% 0, 50% var(--flap-y), 100% 100%)', filter: 'brightness(0.97)' }} />
+        <div className="absolute inset-0 z-20 pointer-events-none" style={{ filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.03))' }}>
+          <div className="absolute inset-0 w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 0, 50% var(--flap-y), 0 100%)', filter: 'brightness(0.99)' }} />
+          <div className="absolute inset-0 pointer-events-none" style={{ filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.03))' }}>
+            <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(100% 0, 50% var(--flap-y), 100% 100%)', filter: 'brightness(0.98)' }} />
           </div>
         </div>
 
         {/* Layer 3: BOTTOM WING */}
-        <div className="absolute inset-0 pointer-events-none drop-shadow-md z-30">
+        <div className="absolute inset-0 pointer-events-none z-30" style={{ filter: 'drop-shadow(0 -4px 15px rgba(0,0,0,0.03))' }}>
           <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 100%, 50% var(--flap-y), 100% 100%)', filter: 'brightness(1.0)' }} />
         </div>
 
         {/* Layer 4: TOP FLAP */}
         <div 
           ref={flapRef}
-          className="absolute top-0 left-0 w-full z-40 drop-shadow-md"
-          style={{ height: 'var(--flap-y)', transformOrigin: 'top center', transformStyle: 'preserve-3d' }}
+          className="absolute top-0 left-0 w-full z-40"
+          style={{ height: 'var(--flap-y)', transformOrigin: 'top center', transformStyle: 'preserve-3d', filter: 'drop-shadow(0 6px 20px rgba(0,0,0,0.05))' }}
         >
-          <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', filter: 'brightness(1.02)' }} />
-          <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', transform: 'rotateX(180deg)', filter: 'brightness(0.94)' }} />
+          <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', filter: 'brightness(1.01)' }} />
+          <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', transform: 'rotateX(180deg)', filter: 'brightness(0.96)' }} />
           
           {/* WAX SEAL responsive scaling mapping against the parent's width */}
           <img 
