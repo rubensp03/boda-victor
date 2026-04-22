@@ -29,12 +29,13 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
         onComplete: onOpenComplete,
       });
 
-      // 1. Pop seal slower and smoother
+      // 1. Seal falls off gracefully simulating a break
       tl.to(sealRef.current, {
-        scale: 1.1,
+        y: "+=150",       // falls down
+        rotation: -20,    // tumbles
         opacity: 0,
-        duration: 1.0,
-        ease: 'power2.inOut',
+        duration: 1.2,
+        ease: 'power3.in', // gravity acceleration
       });
 
       // 2. Open flap extremely slowly and majestically
@@ -79,21 +80,21 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
   return (
     <div 
       ref={containerRef} 
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#FDFBF7]/70 backdrop-blur-xl select-none perspective-[2000px] overflow-hidden"
+      className="fixed inset-0 z-[100] bg-[#FDFBF7] select-none perspective-[2000px] overflow-hidden"
     >
       <div 
         ref={envelopeRef}
         onClick={handleOpen}
-        // Enorme ocupando gran parte del movil, delimitado en desktop
-        className="relative w-[92vw] h-[65vw] max-w-[650px] max-h-[450px] cursor-pointer group"
+        // Envelope occupies exactly 100% of the viewport seamlessly
+        className="relative w-full h-full cursor-pointer group"
       >
         {/* Layer 1: ENVELOPE BACK */}
         <div 
-          className="absolute inset-0 shadow-xl rounded-sm border border-[#e0d9cc]/50 z-0"
+          className="absolute inset-0 shadow-xl border border-[#e0d9cc]/50 z-0"
           style={{ ...paperStyle, filter: 'brightness(0.96)' }}
         >
            {/* Interior oscuro simulando el fondo vacío */}
-           <div className="absolute inset-0 bg-black/10 shadow-[inset_0_10px_40px_rgba(0,0,0,0.15)]" />
+           <div className="absolute inset-0 bg-black/15 shadow-[inset_0_10px_40px_rgba(0,0,0,0.15)]" />
         </div>
 
         {/* Layer 2: SIDE WINGS */}
@@ -112,7 +113,7 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
         {/* Layer 4: TOP FLAP */}
         <div 
           ref={flapRef}
-          className="absolute top-0 left-0 w-full h-[65%] z-40 drop-shadow-md"
+          className="absolute top-0 left-0 w-full h-[50%] z-40 drop-shadow-md"
           style={{ transformOrigin: 'top center', transformStyle: 'preserve-3d' }}
         >
           <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', filter: 'brightness(1.02)' }} />
