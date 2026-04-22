@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 interface EnvelopeOverlayProps {
@@ -6,74 +6,224 @@ interface EnvelopeOverlayProps {
 }
 
 export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const envelopeRef = useRef<HTMLDivElement>(null);
   const flapRef = useRef<HTMLDivElement>(null);
   const letterRef = useRef<HTMLDivElement>(null);
+  const sealRef = useRef<HTMLImageElement>(null);
+  const [isOpened, setIsOpened] = useState(false);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.5 });
+  // Background style to match the linen paper
+  const paperStyle = {
+    backgroundImage: 'url(/assets/bg_linen_paper.png)',
+    backgroundSize: 'cover',
+  };
 
-      // 1. Open flap
-      tl.to(flapRef.current, {
-        rotateX: 180,
-        duration: 1,
-        ease: 'power2.inOut',
-        transformOrigin: "top center",
-      })
-      // 2. Slide letter up from inside envelope
-      .to(letterRef.current, {
-        y: -150,
-        duration: 1,
-        ease: 'power2.out',
-      }, "-=0.2")
-      // 3. Fade out the whole overlay
-      .to(envelopeRef.current, {
-        opacity: 0,
-        scale: 1.1,
-        duration: 1,
-        ease: 'power2.inOut',
+  const handleOpen = () => {
+    if (isOpened) return;
+    setIsOpened(true);
+
+    gsap.context(() => {
+      const tl = gsap.timeline({
         onComplete: onOpenComplete,
       });
-    }, envelopeRef);
 
+      // 1. Seal pop/fade
+      tl.to(sealRef.current, {
+        scale: 1.5,
+        opacity: 0,
+        duration: 0.4,
+        ease: 'back.in(2)',
+      });
+
+      // 2. Open flap (3D rotate)
+      tl.to(flapRef.current, {
+        rotateX: -180,
+        duration: 0.8,
+        ease: 'power3.inOut',
+      }, "-=0.1");
+
+      // 3. Envelope zoom in to camera and slight move down
+      tl.to(envelopeRef.current, {
+        scale: 1.4,
+        y: 80, 
+        duration: 1,
+        ease: 'power2.inOut',
+      }, "-=0.6");
+
+      // 4. Letter slides up out of the envelope
+      tl.to(letterRef.current, {
+        y: -180,
+        duration: 1,
+        ease: 'power3.out',
+        zIndex: 50,
+      }, "-=0.3");
+
+      // 5. Letter scales up to fill the whole screen, dissolving into the actual Hero Section
+      tl.to(letterRef.current, {
+        scale: 4,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.inOut',
+      }, "+=0.2");
+
+      // 6. Fade the whole wrapper out
+      tl.to(containerRef.current, {
+        opacity: 0,
+        duration: 0.5,
+      }, "-=0.6");
+
+    }, containerRef);
+  };
+
+  // Hover breath effect
+  useLayoutEffect(() => {
+    if (isOpened) return;
+    const ctx = gsap.context(() => {
+      gsap.to(envelopeRef.current, {
+        scale: 1.02,
+        y: -5,
+        duration: 2,
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut'
+      });
+    }, containerRef);
     return () => ctx.revert();
-  }, [onOpenComplete]);
+  }, [isOpened]);
 
   return (
     <div 
-      ref={envelopeRef} 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a1a] select-none"
+      ref={containerRef} 
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a140a]/95 backdrop-blur-md select-none perspective-[2000px]"
     >
-      <div className="relative w-80 h-56 bg-rich-cream shadow-2xl perspective-1000">
-        {/* Envelope Back */}
-        <div className="absolute inset-0 bg-[#e0d9cc] border border-[#d1c8b8]" />
+      <div 
+        ref={envelopeRef}
+        onClick={handleOpen}
+        className="relative w-[340px] h-[220px] md:w-[480px] md:h-[300px] cursor-pointer group"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* ENVELOPE BACK (Inside wall) */}
+        <div 
+          className="absolute inset-0 shadow-2xl rounded-sm border border-[#5A6351]/20"
+          style={{ ...paperStyle, filter: 'brightness(0.7)' }}
+        >
+           {/* Dark inner shadow simulator */}
+           <div className="absolute inset-0 bg-black/40 shadow-[inset_0_20px_60px_rgba(0,0,0,0.6)]" />
+        </div>
         
-        {/* Letter Inside */}
+        {/* LETTER INSIDE */}
         <div 
           ref={letterRef}
-          className="absolute inset-x-4 top-4 h-48 bg-white shadow-inner flex flex-col items-center justify-center pt-8 z-10 border border-[#eee]"
+          className="absolute inset-x-2 top-2 bottom-2 bg-[#FDFBF7] shadow-lg flex flex-col items-center justify-center border border-[#e0d9cc]"
+          style={{ ...paperStyle, transform: 'translateZ(1px)' }}
         >
-          <span className="font-calligraphy text-subtle-gold text-2xl">You're Invited</span>
-          <div className="w-12 h-px bg-subtle-gold mt-2 opacity-50" />
+          <span className="font-calligraphy text-subtle-gold text-3xl md:text-5xl text-center px-4 leading-normal drop-shadow-sm">
+            Nuestra Boda<br/>
+            <span className="text-xl md:text-3xl mt-4 block text-[#5A6351] opacity-90">Víctor e Inna</span>
+          </span>
+          <div className="w-24 h-px bg-subtle-gold mt-6 opacity-40" />
         </div>
 
-        {/* Envelope Front Left/Right/Bottom Flaps */}
-        <div className="absolute inset-0 z-20 pointer-events-none">
-          <div className="absolute bottom-0 left-0 w-0 h-0 border-l-[160px] border-l-transparent border-r-[160px] border-r-transparent border-b-[112px] border-b-[#FDFBF7]" />
-          <div className="absolute bottom-0 left-0 w-0 h-0 border-t-[112px] border-t-transparent border-b-[112px] border-b-transparent border-l-[160px] border-l-[#f4eee4]" />
-          <div className="absolute bottom-0 right-0 w-0 h-0 border-t-[112px] border-t-transparent border-b-[112px] border-b-transparent border-r-[160px] border-r-[#f4eee4]" />
+        {/* ENVELOPE FRONT LEFT WING */}
+        <div 
+          className="absolute inset-0 pointer-events-none drop-shadow-lg"
+          style={{ transform: 'translateZ(2px)' }}
+        >
+          <div 
+            className="w-full h-full"
+            style={{ 
+              ...paperStyle,
+              clipPath: 'polygon(0 0, 50% 50%, 0 100%)',
+              filter: 'brightness(0.95)'
+            }} 
+          />
         </div>
 
-        {/* Envelope Top Flap */}
+        {/* ENVELOPE FRONT RIGHT WING */}
+        <div 
+          className="absolute inset-0 pointer-events-none drop-shadow-lg"
+          style={{ transform: 'translateZ(2px)' }}
+        >
+          <div 
+            className="w-full h-full"
+            style={{ 
+              ...paperStyle,
+              clipPath: 'polygon(100% 0, 50% 50%, 100% 100%)',
+              filter: 'brightness(0.90)'
+            }} 
+          />
+        </div>
+
+        {/* ENVELOPE BOTTOM WING */}
+        <div 
+          className="absolute inset-0 pointer-events-none drop-shadow-2xl"
+          style={{ transform: 'translateZ(3px)' }}
+        >
+          <div 
+            className="w-full h-full"
+            style={{ 
+              ...paperStyle,
+              clipPath: 'polygon(0 100%, 50% 50%, 100% 100%)',
+              filter: 'brightness(1.0)'
+            }} 
+          />
+        </div>
+
+        {/* ENVELOPE TOP FLAP */}
         <div 
           ref={flapRef}
-          className="absolute top-0 left-0 w-full z-30 origin-top backface-hidden"
-          style={{ transformStyle: 'preserve-3d' }}
+          className="absolute top-0 left-0 w-full h-[65%] z-30 drop-shadow-2xl"
+          style={{ 
+            transformOrigin: 'top center',
+            transformStyle: 'preserve-3d',
+            transform: 'translateZ(4px)'
+          }}
         >
-          <div className="w-0 h-0 border-l-[160px] border-l-transparent border-r-[160px] border-r-transparent border-t-[140px] border-t-[#FDFBF7]" />
+          {/* Front side of the flap */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              ...paperStyle,
+              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+              backfaceVisibility: 'hidden',
+              filter: 'brightness(1.05)'
+            }} 
+          />
+          {/* Back side of the flap */}
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              ...paperStyle,
+              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+              backfaceVisibility: 'hidden',
+              transform: 'rotateX(180deg)',
+              filter: 'brightness(0.85)'
+            }} 
+          />
+          
+          {/* WAX SEAL */}
+          <img 
+            ref={sealRef}
+            src="/assets/wax_seal.png" 
+            alt="Sello de Cera Dorado" 
+            className="absolute left-1/2 bottom-0 w-24 h-24 md:w-28 md:h-28 object-cover transform -translate-x-1/2 translate-y-[45%] drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] transition-transform group-hover:scale-105"
+            style={{ 
+              backfaceVisibility: 'hidden',
+              clipPath: 'circle(46% at 50% 50%)',
+              mixBlendMode: 'multiply'
+            }}
+          />
         </div>
+
       </div>
+      
+      {/* Click Hint */}
+      {!isOpened && (
+        <p className="absolute bottom-16 text-ivory-white font-sans tracking-[0.3em] uppercase text-xs md:text-sm animate-pulse opacity-80 pointer-events-none">
+          Click para abrir
+        </p>
+      )}
     </div>
   );
 };
