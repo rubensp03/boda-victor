@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -14,13 +14,19 @@ const PALETTE = [
   { color: '#5A6B4A', name: 'Verde oliva' },
 ];
 
-// Repetimos varias veces para que parezca infinito al deslizar manualmente
-const REPEATED_PALETTE = [...PALETTE, ...PALETTE, ...PALETTE, ...PALETTE];
+const REPEATED_PALETTE = [...PALETTE, ...PALETTE, ...PALETTE];
 
 export const DressCodeSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [activeColor, setActiveColor] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -50,79 +56,78 @@ export const DressCodeSection: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
-  // Efecto de loop sencillo para scroll manual
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const el = e.currentTarget;
-    if (el.scrollLeft > el.scrollWidth / 2) {
-      el.scrollLeft = 1;
-    } else if (el.scrollLeft <= 0) {
-      el.scrollLeft = el.scrollWidth / 2 - 1;
-    }
-  };
-
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[70vh] py-24 flex flex-col items-center justify-center bg-[#f5f0e8] overflow-hidden"
+      className="relative min-h-[60vh] py-24 flex flex-col items-center justify-center bg-[#f5f0e8] overflow-hidden"
     >
-      {/* Paper texture bg */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
         style={{ backgroundImage: 'url(/assets/bg_linen_paper.png)' }}
       />
 
       <div className="relative z-10 w-full text-center">
-        {/* Title */}
-        <h3 className="dress-text font-calligraphy text-4xl md:text-6xl text-[#5A6351] mb-4">
+        <h3 className="dress-text font-calligraphy text-4xl md:text-6xl text-[#5A6351] mb-4 px-6 leading-tight">
           Código de Vestimenta
         </h3>
-        <p className="dress-text font-sans text-[10px] md:text-xs tracking-[0.5em] uppercase text-[#b09070] font-bold mb-12 px-6">
+        <p className="dress-text font-sans text-[10px] md:text-xs tracking-[0.5em] uppercase text-[#b09070] font-bold mb-12">
           Etiqueta Formal
         </p>
 
-        {/* Name display */}
-        <div className="h-10 mb-6 px-4">
-           {activeColor ? (
+        {/* Display name */}
+        <div className="h-10 mb-4 px-4">
+           {activeColor && (
              <p className="font-sans text-[11px] md:text-sm tracking-[0.3em] uppercase text-[#858078] font-bold animate-in fade-in duration-300">
                {activeColor}
-             </p>
-           ) : (
-             <p className="font-sans text-[9px] tracking-[0.2em] uppercase text-[#b09070]/60 italic">
-               Toca un color para ver su nombre
              </p>
            )}
         </div>
 
-        {/* Scrollable Container with Custom Carousel behavior */}
-        <div 
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="relative w-full flex overflow-x-auto snap-x snap-mandatory scrollbar-hide py-10 px-[33%] md:px-[40%]"
-          style={{ 
-            msOverflowStyle: 'none', 
-            scrollbarWidth: 'none',
-            WebkitOverflowScrolling: 'touch' 
-          }}
-        >
-          {REPEATED_PALETTE.map((swatch, i) => (
-            <div 
-              key={i} 
-              className="color-dot-anim flex flex-col items-center shrink-0 snap-center px-6"
-              onMouseEnter={() => setActiveColor(swatch.name)}
-              onMouseLeave={() => setActiveColor(null)}
-              onClick={() => setActiveColor(swatch.name)}
-              onTouchStart={() => setActiveColor(swatch.name)}
-            >
-              <div
-                className={`w-20 h-20 md:w-28 md:h-28 rounded-full shadow-2xl border-4 border-white transition-all duration-300 ${activeColor === swatch.name ? 'scale-110 shadow-3xl ring-4 ring-[#b09070]/30 -translate-y-2' : 'scale-100 translate-y-0'}`}
-                style={{ backgroundColor: swatch.color }}
-              />
+        {/* Conditional Rendering based on screen size */}
+        {!isMobile ? (
+          /* Desktop: Show all items static */
+          <div className="flex justify-center items-center gap-8 md:gap-10 mb-16 px-6">
+            {PALETTE.map((swatch, i) => (
+              <div 
+                key={i} 
+                className="color-dot-anim flex flex-col items-center group cursor-pointer"
+                onMouseEnter={() => setActiveColor(swatch.name)}
+                onMouseLeave={() => setActiveColor(null)}
+              >
+                <div
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-xl border-4 border-white transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
+                  style={{ backgroundColor: swatch.color }}
+                />
+                <span className="font-sans text-[9px] tracking-widest uppercase text-[#858078] opacity-0 group-hover:opacity-100 transition-opacity mt-4 font-semibold">
+                  {swatch.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Mobile: Infinite auto-scrolling marquee */
+          <div className="relative w-full overflow-hidden mb-16 py-6 group">
+            <div className="flex animate-marquee hover:pause whitespace-nowrap">
+              {REPEATED_PALETTE.map((swatch, i) => (
+                <div 
+                  key={i} 
+                  className="mx-4 flex flex-col items-center shrink-0"
+                  onTouchStart={() => setActiveColor(swatch.name)}
+                >
+                  <div
+                    className={`w-20 h-20 rounded-full shadow-2xl border-4 border-white transition-all duration-300 ${activeColor === swatch.name ? 'scale-110' : ''}`}
+                    style={{ backgroundColor: swatch.color }}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+            {/* Soft fade edges for mobile carousel */}
+            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#f5f0e8] to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#f5f0e8] to-transparent z-10 pointer-events-none" />
+          </div>
+        )}
 
-        {/* Info text card */}
-        <div className="dress-text max-w-lg mx-auto px-6 mt-12">
+        <div className="dress-text max-w-lg mx-auto px-6">
           <div className="bg-white/40 backdrop-blur-md p-8 md:p-12 shadow-[0_15px_40px_rgba(0,0,0,0.03)] border border-white/60 rounded-sm">
             <p className="font-body text-base md:text-xl text-[#3a3a3a] leading-relaxed">
               Rogamos a nuestros invitados asistir con vestimenta en la paleta
@@ -134,8 +139,15 @@ export const DressCodeSection: React.FC = () => {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+        .hover\\:pause:hover {
+          animation-play-state: paused;
         }
       `}} />
     </section>
