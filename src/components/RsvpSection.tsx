@@ -61,8 +61,12 @@ export const RsvpSection: React.FC = () => {
 
         <div className="rsvp-anim w-full max-w-[340px] md:max-w-[420px] mt-12 md:mt-24 items-center flex justify-center">
           <div 
-            className="backdrop-blur-md p-8 md:p-14 shadow-2xl border border-white/10 text-center relative group w-full"
-            style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+            className="p-8 md:p-14 shadow-2xl border border-white/10 text-center relative group w-full"
+            style={{ 
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(2px)',
+              WebkitBackdropFilter: 'blur(2px)'
+            }}
           >
             
             {/* Subtle decorative internal border */}
