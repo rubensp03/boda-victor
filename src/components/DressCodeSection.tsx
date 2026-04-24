@@ -14,11 +14,12 @@ const PALETTE = [
   { color: '#5A6B4A', name: 'Verde oliva' },
 ];
 
-// Triplicamos la paleta para el efecto de scroll infinito
-const INFINITE_PALETTE = [...PALETTE, ...PALETTE, ...PALETTE];
+// Repetimos varias veces para que parezca infinito al deslizar manualmente
+const REPEATED_PALETTE = [...PALETTE, ...PALETTE, ...PALETTE, ...PALETTE];
 
 export const DressCodeSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [activeColor, setActiveColor] = useState<string | null>(null);
 
   useLayoutEffect(() => {
@@ -49,6 +50,16 @@ export const DressCodeSection: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+  // Efecto de loop sencillo para scroll manual
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    if (el.scrollLeft > el.scrollWidth / 2) {
+      el.scrollLeft = 1;
+    } else if (el.scrollLeft <= 0) {
+      el.scrollLeft = el.scrollWidth / 2 - 1;
+    }
+  };
+
   return (
     <section
       ref={containerRef}
@@ -56,7 +67,7 @@ export const DressCodeSection: React.FC = () => {
     >
       {/* Paper texture bg */}
       <div
-        className="absolute inset-0 z-0 bg-cover bg-center opacity-40 shadow-inner"
+        className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
         style={{ backgroundImage: 'url(/assets/bg_linen_paper.png)' }}
       />
 
@@ -65,41 +76,53 @@ export const DressCodeSection: React.FC = () => {
         <h3 className="dress-text font-calligraphy text-4xl md:text-6xl text-[#5A6351] mb-4">
           Código de Vestimenta
         </h3>
-        <p className="dress-text font-sans text-[10px] md:text-xs tracking-[0.5em] uppercase text-[#b09070] font-bold mb-16 px-6">
+        <p className="dress-text font-sans text-[10px] md:text-xs tracking-[0.5em] uppercase text-[#b09070] font-bold mb-12 px-6">
           Etiqueta Formal
         </p>
 
-        {/* Name display (Persistent on mobile when touched) */}
-        <div className="h-8 mb-4">
-           {activeColor && (
-             <p className="font-sans text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#858078] animate-in fade-in slide-in-from-bottom-1 duration-300">
+        {/* Name display */}
+        <div className="h-10 mb-6 px-4">
+           {activeColor ? (
+             <p className="font-sans text-[11px] md:text-sm tracking-[0.3em] uppercase text-[#858078] font-bold animate-in fade-in duration-300">
                {activeColor}
+             </p>
+           ) : (
+             <p className="font-sans text-[9px] tracking-[0.2em] uppercase text-[#b09070]/60 italic">
+               Toca un color para ver su nombre
              </p>
            )}
         </div>
 
-        {/* Infinite Scroll Container */}
-        <div className="relative w-full mb-16 py-4">
-          <div className="flex animate-infinite-scroll hover:pause whitespace-nowrap">
-            {INFINITE_PALETTE.map((swatch, i) => (
-              <div 
-                key={i} 
-                className="color-dot-anim mx-4 md:mx-6 flex flex-col items-center shrink-0"
-                onMouseEnter={() => setActiveColor(swatch.name)}
-                onMouseLeave={() => setActiveColor(null)}
-                onTouchStart={() => setActiveColor(swatch.name)}
-              >
-                <div
-                  className={`w-16 h-16 md:w-24 md:h-24 rounded-full shadow-xl border-4 border-white transition-all duration-300 ${activeColor === swatch.name ? 'scale-110 shadow-2xl ring-4 ring-[#b09070]/20' : 'scale-100'}`}
-                  style={{ backgroundColor: swatch.color }}
-                />
-              </div>
-            ))}
-          </div>
+        {/* Scrollable Container with Custom Carousel behavior */}
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="relative w-full flex overflow-x-auto snap-x snap-mandatory scrollbar-hide py-10 px-[33%] md:px-[40%]"
+          style={{ 
+            msOverflowStyle: 'none', 
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch' 
+          }}
+        >
+          {REPEATED_PALETTE.map((swatch, i) => (
+            <div 
+              key={i} 
+              className="color-dot-anim flex flex-col items-center shrink-0 snap-center px-6"
+              onMouseEnter={() => setActiveColor(swatch.name)}
+              onMouseLeave={() => setActiveColor(null)}
+              onClick={() => setActiveColor(swatch.name)}
+              onTouchStart={() => setActiveColor(swatch.name)}
+            >
+              <div
+                className={`w-20 h-20 md:w-28 md:h-28 rounded-full shadow-2xl border-4 border-white transition-all duration-300 ${activeColor === swatch.name ? 'scale-110 shadow-3xl ring-4 ring-[#b09070]/30 -translate-y-2' : 'scale-100 translate-y-0'}`}
+                style={{ backgroundColor: swatch.color }}
+              />
+            </div>
+          ))}
         </div>
 
         {/* Info text card */}
-        <div className="dress-text max-w-lg mx-auto px-6">
+        <div className="dress-text max-w-lg mx-auto px-6 mt-12">
           <div className="bg-white/40 backdrop-blur-md p-8 md:p-12 shadow-[0_15px_40px_rgba(0,0,0,0.03)] border border-white/60 rounded-sm">
             <p className="font-body text-base md:text-xl text-[#3a3a3a] leading-relaxed">
               Rogamos a nuestros invitados asistir con vestimenta en la paleta
@@ -111,15 +134,8 @@ export const DressCodeSection: React.FC = () => {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes infinite-scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-33.33%); }
-        }
-        .animate-infinite-scroll {
-          animation: infinite-scroll 25s linear infinite;
-        }
-        .hover\\:pause:hover {
-          animation-play-state: paused;
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       `}} />
     </section>
