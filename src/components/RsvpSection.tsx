@@ -61,7 +61,10 @@ export const RsvpSection: React.FC = () => {
 
         {/* 3. The RSVP Card — Fixed at bottom of section */}
         <div className="rsvp-anim w-full max-w-[340px] md:max-w-[420px] mt-12 md:mt-24 items-center flex justify-center">
-          <div className="bg-[#fdfbf7]/85 backdrop-blur-sm p-8 md:p-14 shadow-[0_30px_70px_rgba(0,0,0,0.5)] border border-[#eae0d2]/30 text-center relative group w-full">
+          <div 
+            className="backdrop-blur-md p-8 md:p-14 shadow-[0_30px_70px_rgba(0,0,0,0.5)] border border-[#eae0d2]/30 text-center relative group w-full"
+            style={{ backgroundColor: 'rgba(253, 251, 247, 0.75)' }}
+          >
             
             {/* Subtle decorative internal border */}
             <div className="absolute inset-4 pointer-events-none border border-[#f0e6d6] opacity-40 transition-opacity group-hover:opacity-70" />
