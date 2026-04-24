@@ -9,7 +9,7 @@ export const FooterSection: React.FC = () => {
 
         
         <p className="font-sans text-[10px] uppercase tracking-widest opacity-40">
-          Víctor e Inna © 2026
+          Víctor e Ina © 2026
         </p>
       </div>
     </footer>

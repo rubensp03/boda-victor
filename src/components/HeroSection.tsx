@@ -42,7 +42,7 @@ export const HeroSection: React.FC = () => {
           <h1 className="hero-elem font-calligraphy text-6xl md:text-[8rem] lg:text-[10rem] text-rich-cream leading-[0.9] mb-12 drop-shadow-2xl text-center md:text-left">
             <span className="block">Víctor</span>
             <span className="block text-subtle-gold text-4xl md:text-6xl md:pl-12 lg:pl-16 my-2 md:my-0">&</span>
-            <span className="block md:pl-20 lg:pl-28">Inna</span>
+            <span className="block md:pl-20 lg:pl-28">Ina</span>
           </h1>
           <div className="hero-elem w-24 h-px bg-subtle-gold/40 mx-auto md:mx-0 mb-8" />
           <p className="hero-elem font-body text-2xl md:text-3xl text-ivory-white italic opacity-90 tracking-widest">
@@ -57,7 +57,7 @@ export const HeroSection: React.FC = () => {
             <div className="bg-white p-4 pb-16 shadow-2xl border border-[#ece8de]">
               <img 
                 src="/assets/foto_novios.jpeg" 
-                alt="Víctor e Inna" 
+                alt="Víctor e Ina" 
                 className="w-80 h-[480px] object-cover"
               />
               <div className="absolute bottom-6 left-0 right-0 text-center font-calligraphy text-2xl text-matte-black opacity-80">
