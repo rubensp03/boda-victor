@@ -47,8 +47,8 @@ export const RsvpSection: React.FC = () => {
 
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center px-6">
         
-        {/* 1. Countdown — Now floating directly over background */}
-        <div className="rsvp-anim w-full max-w-2xl py-12 px-8 mb-20">
+        {/* 1. Countdown — Minimalist on slightly blurred background */}
+        <div className="rsvp-anim w-full max-w-2xl bg-black/10 backdrop-blur-[2px] rounded-sm py-12 px-8 mb-20 border border-white/5">
           <Countdown targetDate="2026-08-23T17:30:00" />
         </div>
 
