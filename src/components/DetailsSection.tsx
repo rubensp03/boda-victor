@@ -33,7 +33,7 @@ export const DetailsSection: React.FC = () => {
       <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: 'url(/assets/details_full_bg.png)',
+          backgroundImage: 'url(/assets/fondo_cala.jpeg)',
         }}
       />
 
