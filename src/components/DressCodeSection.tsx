@@ -19,7 +19,9 @@ const REPEATED_PALETTE = [...PALETTE, ...PALETTE, ...PALETTE];
 export const DressCodeSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeColor, setActiveColor] = useState<string | null>(null);
+  const [startIndex, setStartIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const visibleCount = 3;
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -27,6 +29,13 @@ export const DressCodeSection: React.FC = () => {
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
+
+  const next = () => {
+    setStartIndex((prev) => Math.min(prev + 1, PALETTE.length - visibleCount));
+  };
+  const prev = () => {
+    setStartIndex((prev) => Math.max(prev - 1, 0));
+  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -83,49 +92,53 @@ export const DressCodeSection: React.FC = () => {
            )}
         </div>
 
-        {/* Conditional Rendering based on screen size */}
-        {!isMobile ? (
-          /* Desktop: Show all items static */
-          <div className="flex justify-center items-center gap-8 md:gap-10 mb-16 px-6">
-            {PALETTE.map((swatch, i) => (
+        {/* Carousel Container */}
+        <div className="relative flex items-center justify-center max-w-2xl mx-auto mb-16 px-4">
+          {/* Left Button */}
+          <button 
+            onClick={prev}
+            disabled={startIndex === 0}
+            className="p-2 text-[#b09070] disabled:opacity-20 transition-all hover:scale-110 active:scale-95"
+            aria-label="Previous colors"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          {/* Carousel Window */}
+          <div className="flex gap-4 md:gap-8 overflow-hidden px-2">
+            {PALETTE.slice(startIndex, startIndex + visibleCount).map((swatch, i) => (
               <div 
-                key={i} 
-                className="color-dot-anim flex flex-col items-center group cursor-pointer"
+                key={startIndex + i} 
+                className="color-dot-anim flex flex-col items-center group cursor-pointer transition-all duration-500 animate-in zoom-in-50 fade-in"
                 onMouseEnter={() => setActiveColor(swatch.name)}
                 onMouseLeave={() => setActiveColor(null)}
+                onClick={() => setActiveColor(swatch.name)}
               >
                 <div
                   className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-xl border-4 border-white transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
                   style={{ backgroundColor: swatch.color }}
                 />
-                <span className="font-sans text-[9px] tracking-widest uppercase text-[#858078] opacity-0 group-hover:opacity-100 transition-opacity mt-4 font-semibold">
+                <span className="font-sans text-[9px] tracking-widest uppercase text-[#858078] opacity-60 mt-4 font-semibold md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                   {swatch.name}
                 </span>
               </div>
             ))}
           </div>
-        ) : (
-          /* Mobile: Infinite auto-scrolling marquee */
-          <div className="relative w-full overflow-hidden mb-16 py-6 group">
-            <div className="flex animate-marquee hover:pause whitespace-nowrap">
-              {REPEATED_PALETTE.map((swatch, i) => (
-                <div 
-                  key={i} 
-                  className="mx-4 flex flex-col items-center shrink-0"
-                  onTouchStart={() => setActiveColor(swatch.name)}
-                >
-                  <div
-                    className={`w-20 h-20 rounded-full shadow-2xl border-4 border-white transition-all duration-300 ${activeColor === swatch.name ? 'scale-110' : ''}`}
-                    style={{ backgroundColor: swatch.color }}
-                  />
-                </div>
-              ))}
-            </div>
-            {/* Soft fade edges for mobile carousel */}
-            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#f5f0e8] to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#f5f0e8] to-transparent z-10 pointer-events-none" />
-          </div>
-        )}
+
+          {/* Right Button */}
+          <button 
+            onClick={next}
+            disabled={startIndex >= PALETTE.length - visibleCount}
+            className="p-2 text-[#b09070] disabled:opacity-20 transition-all hover:scale-110 active:scale-95"
+            aria-label="Next colors"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
 
         <div className="dress-text max-w-lg mx-auto px-6">
           <div className="bg-white/40 backdrop-blur-md p-8 md:p-12 shadow-[0_15px_40px_rgba(0,0,0,0.03)] border border-white/60 rounded-sm">
@@ -137,19 +150,6 @@ export const DressCodeSection: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-33.33%); }
-        }
-        .animate-marquee {
-          animation: marquee 15s linear infinite;
-        }
-        .hover\\:pause:hover {
-          animation-play-state: paused;
-        }
-      `}} />
     </section>
   );
 };
