@@ -34,7 +34,7 @@ export const CorinthiansSection: React.FC = () => {
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{
           backgroundImage: 'url(/assets/foto_corintios.jpeg)',
-          filter: 'blur(6px) brightness(0.45)',
+          filter: 'blur(3px) brightness(0.45)',
           transform: 'scale(1.1)',
         }}
       />
