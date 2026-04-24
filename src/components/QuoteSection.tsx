@@ -33,7 +33,7 @@ export const QuoteSection: React.FC = () => {
       />
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a140a]/80 via-transparent to-[#0a140a]/80" />
 
-      <div className="relative z-10 max-w-2xl mx-auto px-8 py-12 md:py-20 bg-forest-green/40 backdrop-blur-sm border border-subtle-gold/20 shadow-2xl rounded-sm">
+      <div className="relative z-10 max-w-2xl mx-auto px-8 py-12 md:py-20 bg-forest-green/20 backdrop-blur-sm border border-subtle-gold/20 shadow-2xl rounded-sm">
         <h2 className="quote-line font-calligraphy text-4xl md:text-6xl text-rich-cream mb-8 md:mb-12 leading-tight">
           Queridos invitados:
         </h2>
