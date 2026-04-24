@@ -12,123 +12,200 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
   const sealRef = useRef<HTMLImageElement>(null);
   const [isOpened, setIsOpened] = useState(false);
 
-  // Modern, crisp feminine paper style (vellum/pearl white, extremely clean)
-  const paperStyle = {
-    backgroundColor: '#FFFCFC', // Soft, luminous, very slight warm snow white
-  };
+  // Soft cream paper
+  const paperStyle = { backgroundColor: '#FAF7F4' };
 
   const handleOpen = () => {
     if (isOpened) return;
     setIsOpened(true);
 
     gsap.context(() => {
-      const tl = gsap.timeline({
-        onComplete: onOpenComplete,
-      });
+      const tl = gsap.timeline({ onComplete: onOpenComplete });
 
-      // 1. Open flap extremely slowly and majestically exactly halfway (around 60 degrees)
+      // 1. Open flap slowly and majestically (65 degrees)
       tl.to(flapRef.current, {
         rotateX: 65,
         duration: 2.5,
         ease: 'power2.out',
       });
 
-      // 2. Envelope zooms massively inwards, moving down, giving the sensation of passing through the opening
+      // 2. Envelope zooms inward — sensation of stepping through the opening
       tl.to(envelopeRef.current, {
-        scale: 2.0,
-        y: 120,
+        scale: 2.2,
+        y: 100,
         duration: 3.5,
         ease: 'power2.inOut',
-      }, "-=2.2");
+      }, '-=2.0');
 
-      // 3. Fade the whole wrapper out seamlessly into the Hero Section
+      // 3. Fade out seamlessly into the hero section
       tl.to(containerRef.current, {
         opacity: 0,
         duration: 2.0,
-      }, "-=1.8");
+      }, '-=1.8');
 
     }, containerRef);
   };
 
-  // Hover breath effect
+  // Ambient breathe effect while waiting
   useLayoutEffect(() => {
     if (isOpened) return;
     const ctx = gsap.context(() => {
       gsap.to(envelopeRef.current, {
-        scale: 1.02,
-        y: -5,
-        duration: 2.5,
+        scale: 1.015,
+        y: -4,
+        duration: 3,
         yoyo: true,
         repeat: -1,
-        ease: 'sine.inOut'
+        ease: 'sine.inOut',
       });
     }, containerRef);
     return () => ctx.revert();
   }, [isOpened]);
 
   return (
-    <div 
-      ref={containerRef} 
-      className="fixed inset-0 z-[100] bg-[#FFFAFA] select-none overflow-hidden"
-      style={{ perspective: '2000px', '--flap-y': 'clamp(250px, 75vw, 50%)' } as React.CSSProperties}
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[100] select-none overflow-hidden"
+      style={{
+        backgroundColor: '#F5F0EB',
+        perspective: '1800px',
+      }}
     >
-      <div 
+      {/* SVG envelope shape — fills full viewport */}
+      <div
         ref={envelopeRef}
         onClick={handleOpen}
-        // Envelope occupies exactly 100% of the viewport seamlessly
         className="relative w-full h-full cursor-pointer group"
       >
-        {/* Layer 1: ENVELOPE BACK */}
-        <div 
-          className="absolute inset-0 border border-[#f0e8e6] z-0"
-          style={{ ...paperStyle, filter: 'brightness(0.97)' }}
+
+        {/* ─── ENVELOPE BACK (full background) ─── */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            ...paperStyle,
+            boxShadow: 'inset 0 0 80px rgba(180,160,140,0.12)',
+            borderRadius: '12px',
+          }}
+        />
+
+        {/* ─── SVG SEAMS / FOLD LINES ─── */}
+        {/* Using an absolutely-positioned SVG that draws the fold triangles with clipping */}
+        <svg
+          className="absolute inset-0 w-full h-full z-10 pointer-events-none"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-           {/* Soft airy interior to feel light and hollow */}
-           <div className="absolute inset-0 bg-[#3a202a]/[0.02] shadow-[inset_0_20px_40px_rgba(50,30,40,0.03)]" />
-        </div>
+          <defs>
+            {/* Subtle inner shadow for fold lines */}
+            <filter id="foldShadow">
+              <feDropShadow dx="0" dy="2" stdDeviation="1.5" floodColor="#C4B0A0" floodOpacity="0.35"/>
+            </filter>
+          </defs>
 
-        {/* Layer 2: SIDE WINGS */}
-        <div className="absolute inset-0 z-20 pointer-events-none" style={{ filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.03))' }}>
-          <div className="absolute inset-0 w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 0, 50% var(--flap-y), 0 100%)', filter: 'brightness(0.99)' }} />
-          <div className="absolute inset-0 pointer-events-none" style={{ filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.03))' }}>
-            <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(100% 0, 50% var(--flap-y), 100% 100%)', filter: 'brightness(0.98)' }} />
-          </div>
-        </div>
+          {/* Left wing */}
+          <polygon
+            points="0,0 50,50 0,100"
+            fill="#F0EBE5"
+            filter="url(#foldShadow)"
+            opacity="0.85"
+          />
+          {/* Right wing */}
+          <polygon
+            points="100,0 50,50 100,100"
+            fill="#EDE7E1"
+            filter="url(#foldShadow)"
+            opacity="0.85"
+          />
+          {/* Bottom wing */}
+          <polygon
+            points="0,100 50,50 100,100"
+            fill="#F3EFE9"
+            opacity="0.7"
+          />
 
-        {/* Layer 3: BOTTOM WING */}
-        <div className="absolute inset-0 pointer-events-none z-30" style={{ filter: 'drop-shadow(0 -4px 15px rgba(0,0,0,0.03))' }}>
-          <div className="w-full h-full" style={{ ...paperStyle, clipPath: 'polygon(0 100%, 50% var(--flap-y), 100% 100%)', filter: 'brightness(1.0)' }} />
-        </div>
+          {/* Subtle fold line between panels */}
+          <line x1="0" y1="0" x2="50" y2="50" stroke="#D4C4B8" strokeWidth="0.15" opacity="0.5"/>
+          <line x1="100" y1="0" x2="50" y2="50" stroke="#D4C4B8" strokeWidth="0.15" opacity="0.5"/>
+          <line x1="0" y1="100" x2="50" y2="50" stroke="#D4C4B8" strokeWidth="0.15" opacity="0.5"/>
+          <line x1="100" y1="100" x2="50" y2="50" stroke="#D4C4B8" strokeWidth="0.15" opacity="0.5"/>
+        </svg>
 
-        {/* Layer 4: TOP FLAP */}
-        <div 
+        {/* ─── TOP FLAP (3D rotating) ─── */}
+        {/*
+          The flap is a full-width div covering the top half.
+          Its clip-path makes it a triangle pointing downward.
+          We use a soft curved clip via SVG clipPath rendered inline.
+        */}
+        <div
           ref={flapRef}
-          className="absolute top-0 left-0 w-full z-40"
-          style={{ height: 'var(--flap-y)', transformOrigin: 'top center', transformStyle: 'preserve-3d', filter: 'drop-shadow(0 6px 20px rgba(0,0,0,0.05))' }}
+          className="absolute inset-x-0 top-0 z-40"
+          style={{
+            height: '55%',
+            transformOrigin: 'top center',
+            transformStyle: 'preserve-3d',
+          }}
         >
-          <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', filter: 'brightness(1.01)' }} />
-          <div className="absolute inset-0" style={{ ...paperStyle, clipPath: 'polygon(0 0, 100% 0, 50% 100%)', backfaceVisibility: 'hidden', transform: 'rotateX(180deg)', filter: 'brightness(0.96)' }} />
-          
-          {/* WAX SEAL responsive scaling mapping against the parent's width */}
-          <img 
+          {/* Flap face (visible side) */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ filter: 'drop-shadow(0 6px 18px rgba(160,130,110,0.18))' }}
+          >
+            <defs>
+              <radialGradient id="flapGrad" cx="50%" cy="0%" r="100%">
+                <stop offset="0%"   stopColor="#FFFFFF"/>
+                <stop offset="100%" stopColor="#EDE5DC"/>
+              </radialGradient>
+            </defs>
+            {/* Rounded-tip triangle: slightly curved bottom vertex */}
+            <path
+              d="M 0,0 L 100,0 Q 100,0 50,91 Q 0,0 0,0 Z"
+              fill="url(#flapGrad)"
+            />
+            {/* Subtle sheen line */}
+            <line x1="0" y1="0" x2="50" y2="91" stroke="#FFFFFF" strokeWidth="0.3" opacity="0.4"/>
+            <line x1="100" y1="0" x2="50" y2="91" stroke="#FFFFFF" strokeWidth="0.3" opacity="0.4"/>
+          </svg>
+
+          {/* Flap back face (shown when flap rotates open) */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ transform: 'rotateX(180deg)', backfaceVisibility: 'hidden' }}
+          >
+            <path d="M 0,0 L 100,0 Q 100,0 50,91 Q 0,0 0,0 Z" fill="#EDE5DC"/>
+          </svg>
+
+          {/* ─── WAX SEAL — centered on flap fold point ─── */}
+          <img
             ref={sealRef}
-            src="/assets/wax_seal_trans.png" 
-            alt="Sello de Cera Dorado" 
-            className="absolute left-1/2 bottom-0 w-[20%] min-w-[70px] max-w-[110px] object-cover transform -translate-x-1/2 translate-y-[45%] transition-transform group-hover:scale-105"
-            style={{ 
-               aspectRatio: '1/1',
-               mixBlendMode: 'multiply',
-               filter: 'contrast(1.2)'
+            src="/assets/seal_vi.svg"
+            alt="Sello de Cera"
+            className="absolute left-1/2 group-hover:scale-105 transition-transform duration-500"
+            style={{
+              width: 'clamp(80px, 12vw, 140px)',
+              aspectRatio: '1/1',
+              bottom: '-2%',
+              transform: 'translateX(-50%) translateY(50%)',
+              filter: 'drop-shadow(0 4px 14px rgba(160,130,110,0.45))',
             }}
           />
         </div>
 
       </div>
-      
+
+      {/* ─── CLICK HINT — perfectly centered ─── */}
       {!isOpened && (
-        <p className="absolute bottom-16 text-[#5A6351] font-sans tracking-[0.3em] uppercase text-xs md:text-sm animate-pulse opacity-80 pointer-events-none drop-shadow-sm">
-          Click para abrir
-        </p>
+        <div className="absolute inset-x-0 bottom-10 flex justify-center pointer-events-none">
+          <p className="text-[#8A7A6E] font-sans tracking-[0.35em] uppercase text-xs md:text-sm animate-pulse opacity-75">
+            Toca para abrir
+          </p>
+        </div>
       )}
     </div>
   );
