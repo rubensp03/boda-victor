@@ -4,6 +4,7 @@ import { HeroSection } from './components/HeroSection';
 import { DetailsSection } from './components/DetailsSection';
 import { GallerySection } from './components/GallerySection';
 import { QuoteSection } from './components/QuoteSection';
+import { CorinthiansSection } from './components/CorinthiansSection';
 import { DressCodeSection } from './components/DressCodeSection';
 import { RsvpSection } from './components/RsvpSection';
 import { FooterSection } from './components/FooterSection';
@@ -30,6 +31,9 @@ function App() {
         </TornPaper>
         <TornPaper position="bottom" className="z-[25] -mb-10">
           <QuoteSection />
+        </TornPaper>
+        <TornPaper position="bottom" className="z-[22] -mb-10">
+          <CorinthiansSection />
         </TornPaper>
         <TornPaper position="bottom" className="z-20 -mb-10">
           <DressCodeSection />

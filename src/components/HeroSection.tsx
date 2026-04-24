@@ -39,8 +39,8 @@ export const HeroSection: React.FC = () => {
       <div className="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Left Column: Typography */}
         <div className="text-center md:text-left">
-          <h2 className="hero-elem font-sans tracking-[0.3em] text-subtle-gold text-base uppercase mb-6 drop-shadow-sm">Estáis invitados a la boda de</h2>
-          <h1 className="hero-elem font-calligraphy text-8xl md:text-[10rem] text-rich-cream leading-[0.8] mb-12 drop-shadow-2xl">
+          <h2 className="hero-elem font-sans tracking-[0.3em] text-subtle-gold text-base uppercase mb-10 drop-shadow-sm">Estáis invitados a la boda de</h2>
+          <h1 className="hero-elem font-calligraphy text-6xl md:text-[10rem] text-rich-cream leading-tight mb-12 drop-shadow-2xl">
             Víctor <span className="text-subtle-gold">&</span> Inna
           </h1>
           <div className="hero-elem w-24 h-px bg-subtle-gold/40 mx-auto md:mx-0 mb-8" />
