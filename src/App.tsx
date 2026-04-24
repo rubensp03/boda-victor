@@ -7,6 +7,7 @@ import { CorinthiansSection } from './components/CorinthiansSection';
 import { DressCodeSection } from './components/DressCodeSection';
 import { RsvpSection } from './components/RsvpSection';
 import { FooterSection } from './components/FooterSection';
+import { HistoryQuoteSection } from './components/HistoryQuoteSection';
 import { TornPaper } from './components/TornPaper';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <RsvpSection />
         </TornPaper>
         <div className="relative z-0">
+          <HistoryQuoteSection />
           <FooterSection />
         </div>
       </main>

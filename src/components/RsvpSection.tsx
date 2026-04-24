@@ -58,12 +58,7 @@ export const RsvpSection: React.FC = () => {
           <Countdown targetDate="2026-08-23T17:30:00" />
         </div>
 
-        {/* 2. Calligraphy Quote */}
-        <div className="rsvp-anim text-center mb-24 max-w-2xl px-4">
-          <h2 className="font-calligraphy text-4xl md:text-5xl lg:text-7xl text-[#f3e5d0] leading-snug drop-shadow-xl">
-            "Gracias por formar parte de nuestra historia"
-          </h2>
-        </div>
+
 
         {/* 3. The RSVP Card — Fixed at bottom of section */}
         <div className="rsvp-anim w-full max-w-[340px] md:max-w-[420px] mt-12 md:mt-24 items-center flex justify-center">
