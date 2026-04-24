@@ -184,13 +184,13 @@ export const EnvelopeOverlay: React.FC<EnvelopeOverlayProps> = ({ onOpenComplete
           {/* ─── WAX SEAL — centered on flap fold point ─── */}
           <img
             ref={sealRef}
-            src="/assets/seal_vi.svg"
+            src="/assets/sello.png"
             alt="Sello de Cera"
             className="absolute left-1/2 group-hover:scale-105 transition-transform duration-500"
             style={{
               width: 'clamp(80px, 12vw, 140px)',
               aspectRatio: '1/1',
-              bottom: '-2%',
+              bottom: '9%',
               transform: 'translateX(-50%) translateY(50%)',
               filter: 'drop-shadow(0 4px 14px rgba(160,130,110,0.45))',
             }}
