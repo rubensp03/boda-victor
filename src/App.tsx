@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { EnvelopeOverlay } from './components/EnvelopeOverlay';
 import { HeroSection } from './components/HeroSection';
 import { DetailsSection } from './components/DetailsSection';
-import { GallerySection } from './components/GallerySection';
 import { QuoteSection } from './components/QuoteSection';
 import { CorinthiansSection } from './components/CorinthiansSection';
 import { DressCodeSection } from './components/DressCodeSection';
@@ -25,9 +24,6 @@ function App() {
         </TornPaper>
         <TornPaper position="bottom" className="z-40 -mb-10">
           <DetailsSection />
-        </TornPaper>
-        <TornPaper position="bottom" className="z-30 -mb-10">
-          <GallerySection />
         </TornPaper>
         <TornPaper position="bottom" className="z-[25] -mb-10">
           <QuoteSection />
