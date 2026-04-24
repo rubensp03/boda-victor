@@ -59,17 +59,16 @@ export const RsvpSection: React.FC = () => {
 
 
 
-        {/* 3. The RSVP Card — Fixed at bottom of section */}
         <div className="rsvp-anim w-full max-w-[340px] md:max-w-[420px] mt-12 md:mt-24 items-center flex justify-center">
           <div 
-            className="backdrop-blur-md p-8 md:p-14 shadow-[0_30px_70px_rgba(0,0,0,0.5)] border border-[#eae0d2]/30 text-center relative group w-full"
-            style={{ backgroundColor: 'rgba(253, 251, 247, 0.75)' }}
+            className="backdrop-blur-lg p-8 md:p-14 shadow-[0_30px_70px_rgba(0,0,0,0.5)] border border-white/20 text-center relative group w-full"
+            style={{ backgroundColor: 'rgba(253, 251, 247, 0.5)' }}
           >
             
             {/* Subtle decorative internal border */}
             <div className="absolute inset-4 pointer-events-none border border-[#f0e6d6] opacity-40 transition-opacity group-hover:opacity-70" />
             
-            <h3 className="relative z-10 font-sans tracking-[0.4em] text-[10px] md:text-xs text-[#b09070] uppercase mb-8 font-bold">
+            <h3 className="relative z-10 font-sans tracking-[0.4em] text-[10px] md:text-xs text-[#8c6d4d] uppercase mb-8 font-bold">
               Confirmación
             </h3>
 
@@ -80,7 +79,7 @@ export const RsvpSection: React.FC = () => {
               Confirmar Asistencia
             </button>
 
-            <p className="font-body italic text-[11px] md:text-xs text-[#7c756c] mt-8 opacity-80 leading-relaxed">
+            <p className="font-body italic text-[11px] md:text-xs text-[#5a544d] mt-8 opacity-80 leading-relaxed">
               Rogamos confirmar antes del <br/> 20.07.2026
             </p>
           </div>
