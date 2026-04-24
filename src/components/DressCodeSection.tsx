@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -19,7 +19,16 @@ export const DressCodeSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeColor, setActiveColor] = useState<string | null>(null);
   const [startIndex, setStartIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const visibleCount = 3;
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   const next = () => {
     setStartIndex((prev) => Math.min(prev + 1, PALETTE.length - visibleCount));
   };
@@ -39,8 +48,6 @@ export const DressCodeSection: React.FC = () => {
         duration: 1,
         stagger: 0.15,
       });
-
-
     }, containerRef);
     return () => ctx.revert();
   }, []);
@@ -72,62 +79,71 @@ export const DressCodeSection: React.FC = () => {
            )}
         </div>
 
-        {/* Carousel Container */}
-        <div className="relative flex items-center justify-center max-w-4xl mx-auto mb-16">
-          {/* Left Button */}
-          <button 
-            onClick={prev}
-            disabled={startIndex === 0}
-            className="absolute left-0 md:-left-16 z-20 p-3 text-[#b09070] disabled:opacity-10 transition-all hover:scale-110 active:scale-95 bg-white/80 rounded-full shadow-md md:bg-transparent md:shadow-none"
-            aria-label="Previous colors"
-          >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-
-          {/* Carousel Window */}
-          <div className="overflow-hidden w-full max-w-[320px] md:max-w-[700px] mx-auto">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${startIndex * (100 / visibleCount)}%)` }}
+        {/* Carousel / Grid Container */}
+        {!isMobile ? (
+          /* Desktop: Show all static */
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-10 mb-16 px-6 max-w-6xl mx-auto">
+            {PALETTE.map((swatch, i) => (
+              <div 
+                key={i} 
+                className="flex flex-col items-center group cursor-pointer"
+                onMouseEnter={() => setActiveColor(swatch.name)}
+                onMouseLeave={() => setActiveColor(null)}
+              >
+                <div
+                  className="w-16 h-16 md:w-24 md:h-24 rounded-full shadow-xl border-4 border-white transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
+                  style={{ backgroundColor: swatch.color }}
+                />
+                <span className="font-sans text-[9px] tracking-widest uppercase text-[#858078] opacity-0 group-hover:opacity-100 transition-opacity mt-4 font-semibold">
+                  {swatch.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Mobile: Carousel */
+          <div className="relative flex items-center justify-center w-full mx-auto mb-16">
+            <button 
+              onClick={prev}
+              disabled={startIndex === 0}
+              className="absolute left-2 z-20 p-2 text-[#b09070] disabled:opacity-10 transition-all bg-white/80 rounded-full shadow-md"
             >
-              {PALETTE.map((swatch, i) => (
-                <div 
-                  key={i} 
-                  className="flex-shrink-0 w-1/3 flex flex-col items-center px-2"
-                >
-                  <div 
-                    className="flex flex-col items-center group cursor-pointer"
-                    onMouseEnter={() => setActiveColor(swatch.name)}
-                    onMouseLeave={() => setActiveColor(null)}
-                    onClick={() => setActiveColor(swatch.name)}
-                  >
-                    <div
-                      className="w-16 h-16 md:w-28 md:h-28 rounded-full shadow-xl border-4 border-white transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            <div className="overflow-hidden w-full max-w-[280px]">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${startIndex * (100 / visibleCount)}%)` }}
+              >
+                {PALETTE.map((swatch, i) => (
+                  <div key={i} className="flex-shrink-0 w-1/3 flex flex-col items-center px-1">
+                    <div 
+                      className="w-16 h-16 rounded-full shadow-xl border-4 border-white"
                       style={{ backgroundColor: swatch.color }}
+                      onClick={() => setActiveColor(swatch.name)}
                     />
-                    <span className="font-sans text-[10px] tracking-widest uppercase text-[#858078] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity mt-4 font-semibold whitespace-nowrap">
+                    <span className="font-sans text-[8px] tracking-tighter uppercase text-[#858078] mt-2 font-semibold">
                       {swatch.name}
                     </span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Right Button */}
-          <button 
-            onClick={next}
-            disabled={startIndex >= PALETTE.length - visibleCount}
-            className="absolute right-0 md:-right-16 z-20 p-3 text-[#b09070] disabled:opacity-10 transition-all hover:scale-110 active:scale-95 bg-white/80 rounded-full shadow-md md:bg-transparent md:shadow-none"
-            aria-label="Next colors"
-          >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
-        </div>
+            <button 
+              onClick={next}
+              disabled={startIndex >= PALETTE.length - visibleCount}
+              className="absolute right-2 z-20 p-2 text-[#b09070] disabled:opacity-10 transition-all bg-white/80 rounded-full shadow-md"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        )}
 
         <div className="dress-text max-w-lg mx-auto px-6">
           <div className="bg-white/40 backdrop-blur-md p-8 md:p-12 shadow-[0_15px_40px_rgba(0,0,0,0.03)] border border-white/60 rounded-sm">
