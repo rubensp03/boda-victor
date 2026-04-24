@@ -34,7 +34,7 @@ export const RsvpSection: React.FC = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-[#182a17] py-24 md:py-32 flex flex-col items-center justify-center min-h-[120vh]"
+      className="relative w-full overflow-hidden bg-[#1a2d17] py-24 md:py-32 flex flex-col items-center justify-center min-h-[120vh]"
     >
       {/* Background Image: The car sketch as the full-section backdrop */}
       <div 
@@ -42,13 +42,13 @@ export const RsvpSection: React.FC = () => {
         style={{ backgroundImage: 'url("/assets/WhatsApp Image 2026-04-23 at 15.24.23.jpeg")' }}
       />
       
-      {/* Dark overlay to ensure text legibility */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[#182a17]/90 via-transparent to-[#182a17]/90" />
+      {/* Subtle bottom fade to blend with footer */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-[#1a2d17]/80" />
 
       <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center px-6">
         
-        {/* 1. Countdown */}
-        <div className="rsvp-anim w-full max-w-2xl bg-black/40 backdrop-blur-md rounded-sm py-12 px-8 mb-20 border border-white/5 shadow-2xl">
+        {/* 1. Countdown — Now floating directly over background */}
+        <div className="rsvp-anim w-full max-w-2xl py-12 px-8 mb-20">
           <Countdown targetDate="2026-08-23T17:30:00" />
         </div>
 

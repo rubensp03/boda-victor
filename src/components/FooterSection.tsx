@@ -2,7 +2,7 @@ import React from 'react';
 
 export const FooterSection: React.FC = () => {
   return (
-    <footer className="relative bg-[#0a140a] text-ivory-white py-16 text-center">
+    <footer className="relative bg-[#1a2d17] text-ivory-white py-16 text-center">
       <div className="max-w-4xl mx-auto px-6">
 
         
