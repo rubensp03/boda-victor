@@ -84,7 +84,7 @@ export const RsvpSection: React.FC = () => {
             </button>
 
             <p className="font-body italic text-[11px] md:text-xs text-[#7c756c] mt-8 opacity-80 leading-relaxed">
-              Rogamos confirmar antes del <br/> 20 de Julio de 2026
+              Rogamos confirmar antes del <br/> 20.07.2026
             </p>
           </div>
         </div>
