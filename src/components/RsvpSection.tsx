@@ -26,7 +26,7 @@ export const RsvpSection: React.FC = () => {
   }, []);
 
   const handleConfirm = () => {
-    const phoneNumber = "34600000000"; // Placeholder - please update with real number
+    const phoneNumber = "34722866265"; 
     const message = encodeURIComponent("¡Hola! Confirmo mi asistencia a vuestra boda. ¡Qué ganas!");
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };
