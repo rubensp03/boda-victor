@@ -61,25 +61,25 @@ export const RsvpSection: React.FC = () => {
 
         <div className="rsvp-anim w-full max-w-[340px] md:max-w-[420px] mt-12 md:mt-24 items-center flex justify-center">
           <div 
-            className="backdrop-blur-lg p-8 md:p-14 shadow-[0_30px_70px_rgba(0,0,0,0.5)] border border-white/20 text-center relative group w-full"
-            style={{ backgroundColor: 'rgba(253, 251, 247, 0.5)' }}
+            className="backdrop-blur-md p-8 md:p-14 shadow-2xl border border-white/10 text-center relative group w-full"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
           >
             
             {/* Subtle decorative internal border */}
             <div className="absolute inset-4 pointer-events-none border border-[#f0e6d6] opacity-40 transition-opacity group-hover:opacity-70" />
             
-            <h3 className="relative z-10 font-sans tracking-[0.4em] text-[10px] md:text-xs text-[#8c6d4d] uppercase mb-8 font-bold">
+            <h3 className="relative z-10 font-sans tracking-[0.4em] text-[10px] md:text-xs text-rich-cream uppercase mb-8 font-bold">
               Confirmación
             </h3>
 
             <button 
               onClick={handleConfirm}
-              className="relative z-10 w-full bg-[#1b301b] text-rich-cream font-sans tracking-[0.3em] text-[10px] md:text-xs uppercase px-6 py-5 hover:bg-[#122412] transition-all duration-500 shadow-lg hover:shadow-xl active:scale-95 flex items-center justify-center gap-3"
+              className="relative z-10 w-full bg-rich-cream text-[#1a2d17] font-sans tracking-[0.3em] text-[10px] md:text-xs uppercase px-6 py-5 hover:bg-white transition-all duration-500 shadow-lg hover:shadow-xl active:scale-95 flex items-center justify-center gap-3"
             >
               Confirmar Asistencia
             </button>
 
-            <p className="font-body italic text-[11px] md:text-xs text-[#5a544d] mt-8 opacity-80 leading-relaxed">
+            <p className="font-body italic text-[11px] md:text-xs text-rich-cream/80 mt-8 opacity-80 leading-relaxed">
               Rogamos confirmar antes del <br/> 20.07.2026
             </p>
           </div>
