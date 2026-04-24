@@ -1,7 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Countdown } from './Countdown';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -47,7 +46,6 @@ export const HeroSection: React.FC = () => {
           <p className="hero-elem font-body text-2xl md:text-3xl text-ivory-white italic opacity-90 tracking-widest">
             23 de Agosto de 2026
           </p>
-          <Countdown targetDate="2026-08-23T17:30:00" />
         </div>
 
         {/* Right Column: Collage Images */}

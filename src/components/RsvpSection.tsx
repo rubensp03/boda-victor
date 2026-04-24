@@ -1,21 +1,25 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Countdown } from './Countdown';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const RsvpSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".rsvp-elem", {
+      gsap.from(".rsvp-anim", {
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 75%",
+          start: "top 80%",
         },
         y: 40,
         opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power2.out"
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "power3.out"
       });
     }, containerRef);
     return () => ctx.revert();
@@ -24,32 +28,55 @@ export const RsvpSection: React.FC = () => {
   return (
     <section 
       ref={containerRef}
-      className="py-32 bg-rich-cream relative"
+      className="relative w-full overflow-hidden bg-[#1a2b16]"
     >
-      <div className="max-w-2xl mx-auto px-6">
-        <div className="rsvp-elem bg-white p-12 border border-[#eae0d2] shadow-sm relative">
-          
-          {/* Subtle folded paper crease line in CSS */}
-          <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(90deg,transparent_49%,#d1c8b8_50%,transparent_51%)]" />
-          <div className="absolute inset-0 pointer-events-none opacity-10 bg-[linear-gradient(0deg,transparent_49%,#d1c8b8_50%,transparent_51%)]" />
+      {/* Background: Dark green grass texture for consistency */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center opacity-30"
+        style={{ backgroundImage: 'url(/assets/bg_dark_grass.png)' }}
+      />
 
-          <div className="text-center relative z-10">
-             <div className="flex justify-center mb-6">
-               <img src="/assets/rings_callalily.png" alt="Calla lily accent" className="w-16 h-16 object-cover rounded-full filter sepia-[0.3]" />
-             </div>
+      <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center pt-20 pb-32 px-6">
+        
+        {/* 1. Countdown Box */}
+        <div className="rsvp-anim w-full bg-black/30 backdrop-blur-md rounded-sm py-10 px-6 mb-12 border border-white/5 shadow-2xl">
+          <Countdown targetDate="2026-08-23T17:30:00" />
+        </div>
+
+        {/* 2. Calligraphy Quote */}
+        <div className="rsvp-anim text-center mb-16">
+          <h2 className="font-calligraphy text-4xl md:text-5xl lg:text-6xl text-rich-cream leading-tight">
+            "Gracias por formar parte de nuestra historia"
+          </h2>
+        </div>
+
+        {/* 3. The Car Sketch Image */}
+        <div className="rsvp-anim relative w-full mb-12 shadow-2xl rounded-sm overflow-hidden border border-white/10">
+          <img 
+            src="/assets/WhatsApp Image 2026-04-23 at 15.24.23.jpeg" 
+            alt="Ilustración pareja coche" 
+            className="w-full h-auto grayscale-[0.2] brightness-110"
+          />
+        </div>
+
+        {/* 4. Confirm Button on White Card */}
+        <div className="rsvp-anim relative w-full max-w-md mx-auto -mt-24 md:-mt-32">
+          <div className="bg-white p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#eae0d2] text-center">
             
-            <h3 className="font-calligraphy text-4xl text-forest-green mb-6">RSVP</h3>
+            {/* Fine line details on paper */}
+            <div className="absolute inset-4 pointer-events-none border border-[#f0e6d6] opacity-50" />
             
-            <p className="font-body text-gray-700 text-lg mb-8">
-              Por favor, confirmad vuestra asistencia antes del <br/>
-              <strong className="text-subtle-gold font-normal italic">20 de Julio de 2026</strong>
-            </p>
-            
-            <button className="bg-forest-green text-rich-cream font-sans tracking-widest text-sm uppercase px-10 py-4 hover:bg-[#152C16] transition-colors border border-transparent hover:border-subtle-gold/50 duration-300">
+            <button 
+              className="relative z-10 w-full bg-[#1e2f1e] text-rich-cream font-sans tracking-[0.25em] text-xs uppercase px-8 py-5 hover:bg-[#152415] transition-all duration-300 border border-transparent active:scale-95"
+            >
               Confirmar Asistencia
             </button>
+            <p className="font-body text-[10px] tracking-widest text-[#858078] uppercase mt-6 opacity-60">
+              Rogamos confirmar antes del 20 de Julio
+            </p>
           </div>
         </div>
+
       </div>
     </section>
   );

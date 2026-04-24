@@ -35,25 +35,31 @@ export const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
   }, [targetDate]);
 
   return (
-    <div className="hero-elem flex gap-2 sm:gap-6 justify-center md:justify-start mt-16 items-baseline text-ivory-white">
-      <div className="flex flex-col items-center min-w-[4rem]">
-        <span className="font-body text-4xl sm:text-5xl text-subtle-gold/90">{timeLeft.days}</span>
-        <span className="font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase mt-2 opacity-70">Días</span>
+    <div className="flex gap-4 sm:gap-8 justify-center items-center text-rich-cream">
+      <div className="flex flex-col items-center">
+        <span className="font-body text-4xl sm:text-5xl tracking-widest">{timeLeft.days}</span>
+        <span className="font-sans text-[8px] sm:text-[10px] tracking-[0.3em] uppercase mt-3 opacity-60">Días</span>
       </div>
-      <span className="font-body text-2xl text-subtle-gold/40 mb-6">:</span>
-      <div className="flex flex-col items-center min-w-[4rem]">
-        <span className="font-body text-4xl sm:text-5xl text-subtle-gold/90">{String(timeLeft.hours).padStart(2, '0')}</span>
-        <span className="font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase mt-2 opacity-70">Hrs</span>
+      
+      <span className="text-2xl opacity-30 mt-[-1rem]">:</span>
+      
+      <div className="flex flex-col items-center">
+        <span className="font-body text-4xl sm:text-5xl tracking-widest">{String(timeLeft.hours).padStart(2, '0')}</span>
+        <span className="font-sans text-[8px] sm:text-[10px] tracking-[0.3em] uppercase mt-3 opacity-60">Horas</span>
       </div>
-      <span className="font-body text-2xl text-subtle-gold/40 mb-6">:</span>
-      <div className="flex flex-col items-center min-w-[4rem]">
-        <span className="font-body text-4xl sm:text-5xl text-subtle-gold/90">{String(timeLeft.minutes).padStart(2, '0')}</span>
-        <span className="font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase mt-2 opacity-70">Min</span>
+
+      <span className="text-2xl opacity-30 mt-[-1rem]">:</span>
+
+      <div className="flex flex-col items-center">
+        <span className="font-body text-4xl sm:text-5xl tracking-widest">{String(timeLeft.minutes).padStart(2, '0')}</span>
+        <span className="font-sans text-[8px] sm:text-[10px] tracking-[0.3em] uppercase mt-3 opacity-60">Min</span>
       </div>
-      <span className="font-body text-2xl text-subtle-gold/40 mb-6">:</span>
-      <div className="flex flex-col items-center min-w-[4rem]">
-        <span className="font-body text-4xl sm:text-5xl text-subtle-gold/90">{String(timeLeft.seconds).padStart(2, '0')}</span>
-        <span className="font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase mt-2 opacity-70">Seg</span>
+
+      <span className="text-2xl opacity-30 mt-[-1rem]">:</span>
+
+      <div className="flex flex-col items-center">
+        <span className="font-body text-4xl sm:text-5xl tracking-widest">{String(timeLeft.seconds).padStart(2, '0')}</span>
+        <span className="font-sans text-[8px] sm:text-[10px] tracking-[0.3em] uppercase mt-3 opacity-60">Seg</span>
       </div>
     </div>
   );
