@@ -39,7 +39,11 @@ export const RsvpSection: React.FC = () => {
       {/* Background Image: The car sketch as the full-section backdrop */}
       <div 
         className="absolute inset-0 z-0 bg-no-repeat bg-center bg-cover md:bg-contain opacity-40 md:opacity-60"
-        style={{ backgroundImage: 'url("/assets/WhatsApp Image 2026-04-23 at 15.24.23.jpeg")' }}
+        style={{ 
+          backgroundImage: 'url("/assets/WhatsApp Image 2026-04-23 at 15.24.23.jpeg")',
+          maskImage: 'radial-gradient(circle, black 50%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(circle, black 50%, transparent 100%)'
+        }}
       />
       
       {/* Subtle bottom fade to blend with footer */}
