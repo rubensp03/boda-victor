@@ -144,7 +144,7 @@ export const DressCodeSection: React.FC = () => {
           100% { transform: translateX(-33.33%); }
         }
         .animate-marquee {
-          animation: marquee 30s linear infinite;
+          animation: marquee 15s linear infinite;
         }
         .hover\\:pause:hover {
           animation-play-state: paused;
