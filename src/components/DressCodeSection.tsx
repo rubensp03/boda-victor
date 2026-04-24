@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -14,22 +14,12 @@ const PALETTE = [
   { color: '#5A6B4A', name: 'Verde oliva' },
 ];
 
-const REPEATED_PALETTE = [...PALETTE, ...PALETTE, ...PALETTE];
 
 export const DressCodeSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeColor, setActiveColor] = useState<string | null>(null);
   const [startIndex, setStartIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const visibleCount = 3;
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
   const next = () => {
     setStartIndex((prev) => Math.min(prev + 1, PALETTE.length - visibleCount));
   };
