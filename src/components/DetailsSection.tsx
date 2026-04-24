@@ -53,7 +53,7 @@ export const DetailsSection: React.FC = () => {
                 Fecha
               </p>
               <p className="font-body text-xl md:text-2xl text-[#2c2c2c] leading-[1.1]">
-                Domingo, 23 de <br className="md:hidden"/> Agosto de 2026
+                Domingo, 23.08.2026
               </p>
             </div>
 

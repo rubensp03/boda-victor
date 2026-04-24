@@ -46,7 +46,7 @@ export const HeroSection: React.FC = () => {
           </h1>
           <div className="hero-elem w-24 h-px bg-subtle-gold/40 mx-auto md:mx-0 mb-8" />
           <p className="hero-elem font-body text-2xl md:text-3xl text-ivory-white italic opacity-90 tracking-widest">
-            23 de Agosto de 2026
+            23.08.2026
           </p>
         </div>
 
