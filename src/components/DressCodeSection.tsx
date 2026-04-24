@@ -83,48 +83,57 @@ export const DressCodeSection: React.FC = () => {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative flex items-center justify-center max-w-2xl mx-auto mb-16 px-4">
+        <div className="relative flex items-center justify-center max-w-3xl mx-auto mb-16">
           {/* Left Button */}
           <button 
             onClick={prev}
             disabled={startIndex === 0}
-            className="p-2 text-[#b09070] disabled:opacity-20 transition-all hover:scale-110 active:scale-95"
+            className="absolute left-0 md:-left-12 z-20 p-2 text-[#b09070] disabled:opacity-20 transition-all hover:scale-110 active:scale-95 bg-white/50 rounded-full md:bg-transparent"
             aria-label="Previous colors"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
 
           {/* Carousel Window */}
-          <div className="flex gap-4 md:gap-8 overflow-hidden px-2">
-            {PALETTE.slice(startIndex, startIndex + visibleCount).map((swatch, i) => (
-              <div 
-                key={startIndex + i} 
-                className="color-dot-anim flex flex-col items-center group cursor-pointer transition-all duration-500 animate-in zoom-in-50 fade-in"
-                onMouseEnter={() => setActiveColor(swatch.name)}
-                onMouseLeave={() => setActiveColor(null)}
-                onClick={() => setActiveColor(swatch.name)}
-              >
-                <div
-                  className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-xl border-4 border-white transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
-                  style={{ backgroundColor: swatch.color }}
-                />
-                <span className="font-sans text-[9px] tracking-widest uppercase text-[#858078] opacity-60 mt-4 font-semibold md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                  {swatch.name}
-                </span>
-              </div>
-            ))}
+          <div className="overflow-hidden w-full max-w-[280px] md:max-w-[600px] mx-auto">
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${startIndex * (100 / visibleCount)}%)` }}
+            >
+              {PALETTE.map((swatch, i) => (
+                <div 
+                  key={i} 
+                  className="flex-shrink-0 w-1/3 flex flex-col items-center px-1"
+                >
+                  <div 
+                    className="flex flex-col items-center group cursor-pointer"
+                    onMouseEnter={() => setActiveColor(swatch.name)}
+                    onMouseLeave={() => setActiveColor(null)}
+                    onClick={() => setActiveColor(swatch.name)}
+                  >
+                    <div
+                      className="w-16 h-16 md:w-24 md:h-24 rounded-full shadow-xl border-4 border-white transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl color-dot-anim"
+                      style={{ backgroundColor: swatch.color }}
+                    />
+                    <span className="font-sans text-[9px] tracking-widest uppercase text-[#858078] opacity-60 mt-4 font-semibold md:opacity-0 md:group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      {swatch.name}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Right Button */}
           <button 
             onClick={next}
             disabled={startIndex >= PALETTE.length - visibleCount}
-            className="p-2 text-[#b09070] disabled:opacity-20 transition-all hover:scale-110 active:scale-95"
+            className="absolute right-0 md:-right-12 z-20 p-2 text-[#b09070] disabled:opacity-20 transition-all hover:scale-110 active:scale-95 bg-white/50 rounded-full md:bg-transparent"
             aria-label="Next colors"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
