@@ -48,7 +48,7 @@ export const CorinthiansSection: React.FC = () => {
           Todo lo disculpa, todo lo cree,
         </p>
         <p className="cor-line font-sans text-base md:text-lg tracking-[0.25em] leading-[2.2] text-white uppercase">
-          todo lo espera, todo lo soportado.
+          todo lo espera, todo lo soporta.
         </p>
         <p className="cor-line font-sans text-base md:text-lg tracking-[0.25em] leading-[2.2] text-white uppercase mt-4">
           1 Corintios 13:4-7
